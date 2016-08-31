@@ -1,4 +1,4 @@
-const http         = require('http'),
+/*const http         = require('http'),
       fs           = require('fs'),
       path         = require('path'),
       contentTypes = require('./utils/content-types'),
@@ -40,4 +40,20 @@ let server = http.createServer(function (req, res) {
 
 server.listen(env.NODE_PORT || 3000, env.NODE_IP || 'localhost', function () {
   console.log(`Application worker ${process.pid} started...`);
+});
+*/
+var env = process.env;
+var path = require('path');
+var express = require('express');
+var main = express();
+main.get('/', function(req, res, next) {
+  res.sendFile(path.resolve('./static/index.html'));
+});
+main.get('/health', function(req, res, next) {
+  res.sendStatus(200); // equivalent to res.status(200).send('OK')  
+});
+main.use('/static', express.static('static'));
+
+main.listen(env.NODE_PORT || 3000, env.NODE_IP || 'localhost', function () {
+    console.log('Application worker ${process.pid} started...');
 });
