@@ -1,0 +1,22 @@
+{
+  "name": "marks-method",
+  "description": "Word Net aggregation application",
+  "main": "start.js",
+  "authors": [
+    "Andrew Rather"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "WordNet",
+    "Language"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

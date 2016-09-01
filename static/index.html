@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="marks-method">
 <head>
-  <meta charset="UTF-8">
-  <title>Custom Node.js cartridge for OpenShift</title>
-  <meta name="description" content="WordNet aggregation for use with learning languages">
-  <meta name="keywords" content="Node.js, JavaScript, ES6, OpenShift, es6, paas, WordNet">
-  <meta name="author" content="Andrew Rather">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <!--<link href='https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Mono' rel='stylesheet' type='text/css'>-->
-  <link href="/static/main.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<title>Marks Method</title>
+	<meta name="description" content="WordNet aggregation for use with learning languages">
+	<meta name="keywords" content="Node.js, JavaScript, ES6, OpenShift, es6, paas, WordNet">
+	<meta name="author" content="Andrew Rather">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link href="/static/main.css" rel="stylesheet">
+	<script type="text/javascript" src="static/js/angular.min.js"></script>
+	<script type="text/javascript" src="static/js/angular-route.min.js"></script>
+	<script type="text/javascript" src="static/main.js"></script>
 </head>
 <body>
-  Hello World
+	<div class="nav">
+		<ul>
+			<li><a href="/#/">Home</a></li>
+			<li><a href="/#/about">About</a></li>
+		</ul>
+	</div>
+	<ng-view>
+		
+	</ng-view>
 </body>
 </html>
