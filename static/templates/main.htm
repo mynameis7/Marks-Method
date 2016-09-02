@@ -1,1 +1,7 @@
-<input type="text" ng-model="word" /><button type="submit" ng-click="findWord()">Submit</button>
+<input type="text" ng-model="word_search" ng-change="updateWordList()" ng-model-options="{debounce: 750}"/>
+<button type="submit" ng-click="findWord()">Submit</button>
+<div class="word-list">
+	<div class="word-elem" ng-repeat="word in words">
+		<a href="/words/{{word}}">{{word}}</a>
+	</div>
+</div>
