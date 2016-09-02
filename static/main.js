@@ -27,7 +27,6 @@
 			url:"/gapi/define/" + $scope.word,
 			method: "GET",
 		};
-		//$http.get("https://glosbe.com/gapi/translate?from=eng&dest=eng&format=json&phrase=hello&callback=my_custom_function_name&pretty=true")
 		$http(config).then(
 						function success(response){
 							$scope.eng_definition = response.data;
