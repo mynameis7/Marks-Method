@@ -8,7 +8,7 @@
 		$scope.words = [];
 		$scope.findWord = function(){
 			$log.info($scope.word_search);
-			$location.path("/words/" + $scope.word_search);
+			$location.path("/words/" + $scope.word_search.toLowerCase());
 		}
 		$scope.updateWordList = function() {
 			console.log("word")
