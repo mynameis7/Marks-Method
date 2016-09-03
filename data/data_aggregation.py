@@ -1,4 +1,5 @@
 import csv
+import requests
 
 
 # with open("data.csv", "w") as f:
@@ -15,8 +16,17 @@ import csv
 #             for row in reader:
 #                 writer.writerow(row)
 
+# with open("data.csv") as f:
+#     reader = csv.reader(f)
+#     with open("temp.txt", "w") as fd:
+#         for row in reader:
+#             fd.write(row[3]+","+'"' + row[4]+'"' +","+ row[8] + "," + row[9] + "\n")
+
+headers = ("Semantic Field","Structure","Database ID","Synset","Phrase 1","Phrase 2","Definiton","Jpn ID","Jpn Synset","Phrase 1","Phrase 2","Jpn Definition")
+wordNet_headers = ("", "Semantic Field","Structure","Database ID","Synset","Phrase 1","Phrase 2","Definiton","Jpn ID","Jpn Synset","Phrase 1","Phrase 2","Jpn Definition")
 with open("data.csv") as f:
-    reader = csv.reader(f)
-    with open("temp.txt", "w") as fd:
-        for row in reader:
-            fd.write(row[3]+","+'"' + row[4]+'"' +","+ row[8] + "," + row[9] + "\n")
+	reader = csv.reader(f);
+	data = [dict(zip(wordNet_headers, row)) for row in reader]
+	for d in data:
+		d.pop("", None)
+		requests.post('http://marksmethod-mynameis7.rhcloud.com/api/wordnet/add', d);
