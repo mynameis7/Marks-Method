@@ -33,7 +33,6 @@ wordNet_headers = ("", "Semantic Field","Structure","Database ID","Synset","Phra
 # 		requests.post('http://marksmethod-mynameis7.rhcloud.com/api/wordnet/add', json=d);
 with open("mark_data.csv") as f:
 	reader = csv.DictReader(f);
-	#data = [dict(zip(headers, row)) for row in reader]
 	for d in reader:
 		print d["Database ID"], d["Synset"]
-		#requests.post('http://marksmethod-mynameis7.rhcloud.com/api/phrases/add', json=d);
+		requests.post('http://marksmethod-mynameis7.rhcloud.com/api/phrases/add', json=d);
