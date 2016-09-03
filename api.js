@@ -14,7 +14,7 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
     process.env.OPENSHIFT_APP_NAME;
 }
 
-
+/*
 var wordnet = express();
 var phrases = express();
 
@@ -30,12 +30,17 @@ phrases.post('/add', jsonparser, function(req, res) {
 	res.sendStatus(200);
 })
 
-api.get('/search', function(req, res, next) {
-	console.log(req.query.word);
-
-	res.send(200);
-});
 api.use('/phrases', phrases);
 api.use('/wordnet', wordnet);
+*/
+api.get('/search', function(req, res, next) {
+	var db = mongojs(connection_string, ['phrase_data']);
+	db.phrase_data.find({"Synset": {$text: req.query.word }}, function(err, docs) {
+		if(err) return res.sendStatus(500);
+		res.json(docs);
+	});
+
+});
+
 
 module.exports = api;
