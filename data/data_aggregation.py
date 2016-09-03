@@ -30,3 +30,4 @@ with open("data.csv") as f:
 	for d in data:
 		d.pop("", None)
 		requests.post('http://marksmethod-mynameis7.rhcloud.com/api/wordnet/add', d);
+		print d["Database ID"], d["Synset"]

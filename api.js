@@ -20,6 +20,7 @@ var phrases = express();
 
 wordnet.post('/add', jsonparser, function(req, res) {
 	var db = mongojs(connection_string, ['wordnet_data']);
+	console.log(req.body);
     db.wordnet_data.insert(req.body);
     res.sendStatus(200);
 });
