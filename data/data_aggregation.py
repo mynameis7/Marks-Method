@@ -34,5 +34,5 @@ wordNet_headers = ("", "Semantic Field","Structure","Database ID","Synset","Phra
 with open("mark_data.csv") as f:
 	reader = csv.DictReader(f);
 	for d in reader:
-		print d["Database ID"], d["Synset"]
-		requests.post('http://marksmethod-mynameis7.rhcloud.com/api/phrases/add', json=d);
+		print d["Database ID"], d["Synset"], requests.post('http://marksmethod-mynameis7.rhcloud.com/api/phrases/add', json=d);
+		
