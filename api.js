@@ -39,9 +39,12 @@ phrases.post('/add', jsonparser, function(req, res) {
 api.use('/phrases', phrases);
 api.use('/wordnet', wordnet);
 */
+
 api.get('/search', function(req, res, next) {
 	var db = mongojs(connection_string, ['phrase_data']);
-	db.phrase_data.find({"Synset": req.query.word}, function(err, docs) {
+	//var re = RegExp("\\b" + req.query.word + "\\b")
+
+	db.phrase_data.find({$where: function() { return (this.Synset.indexOf(req.query.word) >= 0)}}, function(err, docs) {
 		if(err) return handleErr(err, res);
 		res.json(docs);
 	});
