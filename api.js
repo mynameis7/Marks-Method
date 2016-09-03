@@ -36,6 +36,7 @@ api.get('/search', function(req, res, next) {
 
 	res.send(200);
 });
+api.user('/phrase', phrases);
 api.use('/wordnet', wordnet);
 
 module.exports = api;
