@@ -25,6 +25,11 @@ wordnet.post('/add', jsonparser, function(req, res) {
     res.sendStatus(200);
 });
 
+phrases.post('/add', jsonparser, function(req, res) {
+	var db = mongojs(connection_string, ['phrase_data']);
+	db.phrase_data.insert(req.body);
+	res.sendStatus(200);
+})
 
 api.get('/search', function(req, res, next) {
 	console.log(req.query.word);

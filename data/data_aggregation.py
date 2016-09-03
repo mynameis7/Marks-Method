@@ -1,6 +1,6 @@
 import csv
 import requests
-
+import json
 
 # with open("data.csv", "w") as f:
 #     writer = csv.writer(f)
@@ -24,10 +24,16 @@ import requests
 
 headers = ("Semantic Field","Structure","Database ID","Synset","Phrase 1","Phrase 2","Definiton","Jpn ID","Jpn Synset","Phrase 1","Phrase 2","Jpn Definition")
 wordNet_headers = ("", "Semantic Field","Structure","Database ID","Synset","Phrase 1","Phrase 2","Definiton","Jpn ID","Jpn Synset","Phrase 1","Phrase 2","Jpn Definition")
-with open("data.csv") as f:
-	reader = csv.reader(f);
-	data = [dict(zip(wordNet_headers, row)) for row in reader]
-	for d in data:
-		d.pop("", None)
-		requests.post('http://marksmethod-mynameis7.rhcloud.com/api/wordnet/add', d);
+# with open("data.csv") as f:
+# 	reader = csv.reader(f);
+# 	data = [dict(zip(wordNet_headers, row)) for row in reader]
+# 	for d in data:
+# 		d.pop("", None)
+# 		print d["Database ID"], d["Synset"]
+# 		requests.post('http://marksmethod-mynameis7.rhcloud.com/api/wordnet/add', json=d);
+with open("mark_data.csv") as f:
+	reader = csv.DictReader(f);
+	#data = [dict(zip(headers, row)) for row in reader]
+	for d in reader:
 		print d["Database ID"], d["Synset"]
+		#requests.post('http://marksmethod-mynameis7.rhcloud.com/api/phrases/add', json=d);
