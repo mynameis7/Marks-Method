@@ -44,7 +44,7 @@ api.get('/search', function(req, res, next) {
 	var db = mongojs(connection_string, ['phrase_data']);
 	var re = RegExp("\b" + req.query.word + "\b")
 
-	db.phrase_data.find({$where: function() { return (this.Synset.search(re) >= 0)}}, function(err, docs) {
+	db.phrase_data.find({$where: function() { return (re.match(this.Synset))}}, function(err, docs) {
 		if(err) return handleErr(err, res);
 		res.json(docs);
 	});
