@@ -46,7 +46,7 @@ api.use('/wordnet', wordnet);
 
 api.get('/search', function(req, res, next) {
 	var db = mongojs(connection_string, ['phrase_data']);
-	var re = RegExp("\\b" + RegExp.quote(req.query.word) + "\\b")
+	var re = RegExp("\\b" + RegExp.quote(req.query.word) + "\\b", 'i')
 	console.log(re);
 	db.phrase_data.find({Synset: {$regex: re}}, function(err, docs) {
 		if (err) return handleErr(err, res);
