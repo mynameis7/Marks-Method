@@ -11,19 +11,22 @@
 			$location.path('/words/en/' + synset['Database ID']);
 		}
 		$scope.updateWordList = function() {
-
-			var config = {
-				url:"/api/search",
-				method: "GET",
-				params: {word: $scope.word_search}
-			};
-			$http(config).then(
-				function success(response) {
-					$scope.words = response.data;
-				}, function error(response) {
-					$scope.words = [];
-				}
-			)
+			if($scope.word_search === "")
+				$scope.words = [];
+			else {
+				var config = {
+					url:"/api/search",
+					method: "GET",
+					params: {word: $scope.word_search}
+				};
+				$http(config).then(
+					function success(response) {
+						$scope.words = response.data;
+					}, function error(response) {
+						$scope.words = [];
+					}
+				)
+			}
 		}
 	}
 	mainController.$inject = ["$scope", "$location", "$log", "$http"];
