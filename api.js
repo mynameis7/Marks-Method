@@ -4,6 +4,10 @@ var mongojs = require("mongojs");
 var jsonparser = bodyparser.json();
 var api = express();
 
+RegExp.quote = function(str) {
+    return (str+'').replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
+};
+
 var connection_string = '127.0.0.1:27017/marksmethod';
 // if OPENSHIFT env variables are present, use the available connection info:
 if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
@@ -42,7 +46,7 @@ api.use('/wordnet', wordnet);
 
 api.get('/search', function(req, res, next) {
 	var db = mongojs(connection_string, ['phrase_data']);
-	var re = RegExp("\\b" + req.query.word + "\\b")
+	var re = RegExp("\\b" + RegExp.quote(req.query.word) + "\\b")
 	console.log(re);
 	db.phrase_data.find({Synset: {$regex: re}}, function(err, docs) {
 		if (err) return handleErr(err, res);
