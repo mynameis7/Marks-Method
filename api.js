@@ -42,13 +42,19 @@ api.use('/wordnet', wordnet);
 
 api.get('/search', function(req, res, next) {
 	var db = mongojs(connection_string, ['phrase_data']);
+	var re = RegExp("\\b" + req.query.word + "\\b")
+	console.log(re);
+	db.phrase_data.find({Synset: {$regex: re}}, function(err, docs) {
+		if (err) return handleErr(err, res);
+		res.json(docs);
+	})
 	//var re = RegExp("\b" + req.query.word + "\b")
-	db.phrase_data.createIndex({Synset:"text"});
-	console.log(req.query.word);
-	db.phrase_data.find({$text: {$search: req.query.word}}, function(err, docs) {
+	//db.phrase_data.ensureIndex({Synset:"text"});
+	//console.log(req.query.word);
+	/*db.phrase_data.find({$text: {$search: req.query.word}}, function(err, docs) {
 		if(err) return handleErr(err, res);
 		res.json(docs);
-	});
+	});*/
 
 });
 
