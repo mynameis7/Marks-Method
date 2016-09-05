@@ -1,7 +1,8 @@
 <input type="text" ng-model="word_search" ng-change="updateWordList()" ng-model-options="{debounce: 250}"/>
-<button type="submit" ng-click="findWord()">Submit</button>
+<!--<button type="submit" ng-click="findWord()">Submit</button>-->
 <div class="word-list">
-	<div class="word-elem" ng-repeat="word in words">
-		<a href="/words/{{word}}">{{word}}</a>
+	<div class="word-elem" ng-repeat="word in words"  ng-click="findWord(word)">
+		{{word.Synset}}
+		<!--<div class="test" ng-repeat="(key, value) in word">{{key}} - {{value}}</div>-->
 	</div>
 </div>
