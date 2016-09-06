@@ -1,8 +1,17 @@
-<input type="text" ng-model="word_search" ng-change="updateWordList()" ng-model-options="{debounce: 250}"/>
-<!--<button type="submit" ng-click="findWord()">Submit</button>-->
-<div class="word-list">
-	<div class="word-elem" ng-repeat="word in words"  ng-click="findWord(word)">
-		{{word.Synset}}
-		<!--<div class="test" ng-repeat="(key, value) in word">{{key}} - {{value}}</div>-->
-	</div>
-</div>
+<md-card>
+	<md-card-title>Search</md-card-title>
+	<md-content class="md-padding">
+		<md-input-container>
+			<label>Word</label>
+			<input ng-model="search.word_search" ng-change="search.updateWordList()" ng-model-options="{debounce: 250}"/>
+		</md-input-container>
+	</md-content>
+	<md-content>
+		<md-list flex>
+			<md-list-item ng-repeat="word in search.words"  ng-click="search.findWord(word)">
+				{{word.Synset}}
+				<!--<div class="test" ng-repeat="(key, value) in word">{{key}} - {{value}}</div>-->
+			</md-list-item>
+		</md-list>
+	</md-content>
+</md-card>

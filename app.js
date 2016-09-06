@@ -11,6 +11,7 @@ main.get('/health', function(req, res, next) {
 	res.sendStatus(200); // equivalent to res.status(200).send('OK')  
 });
 main.use('/static', express.static('static'));
+main.use('/bower', express.static('bower_components'));
 main.use('/api', api);
 main.use('/gapi', gapi);
 main.listen(env.NODE_PORT || 3000, env.NODE_IP || 'localhost', function () {

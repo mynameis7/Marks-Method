@@ -1,7 +1,14 @@
 (function() {
-	angular.module("marks-method", ["ngRoute"])
+	angular.module("marks-method", ["ngRoute", "ngMaterial"])
 })();
 
+(function() {
+	function AppCtrl() {
+		var ctrl = this;
+	}
+	angular.module("marks-method").controller("AppCtrl", AppCtrl);
+})();
+/*
 (function() {
 	function mainController($scope, $location, $log, $http) {
 		$scope.word_search = "";
@@ -33,7 +40,7 @@
 	angular.module("marks-method").controller("mainController", mainController)
 
 })();
-
+*/
 (function() {
 	function wordsController($scope, $location, $routeParams, $http) {
 		$scope.word = $routeParams.db_id;
@@ -62,12 +69,59 @@
 	angular.module("marks-method").controller("wordsController", wordsController)
 })();
 
+(() => {
+	let component = (() => {
+		angular.module("marks-method").component('searchView', {
+			controller: SearchController,
+			templateUrl: '/static/templates/main.htm',
+			controllerAs: 'search'
+		});
+	});
+
+	SearchController.$inject = ["$location", "$log", "$http"];
+	function SearchController($location, $log, $http) {
+		var ctrl = this;
+		ctrl.$onInit = onInit;
+		function onInit() {
+			// do set up here
+			ctrl.word_search = "";
+			ctrl.words = [];
+		}
+		ctrl.findWord = function(synset){
+				$log.info(synset);
+				$location.path('/words/en/' + synset['Database ID']);
+		}
+		ctrl.updateWordList = function() {
+			if(ctrl.word_search === "")
+				ctrl.words = [];
+			else {
+				var config = {
+					url:"/api/search",
+					method: "GET",
+					params: {word: ctrl.word_search}
+				};
+				$http(config).then(
+					function success(response) {
+						ctrl.words = response.data;
+					}, function error(response) {
+						ctrl.words = [];
+					}
+				)
+			}
+		}
+	}
+
+	component();
+
+})();
+
 (function() {
 	angular.module("marks-method").config(function($routeProvider) {
 		$routeProvider
 		.when("/", {
-			templateUrl : "/static/templates/main.htm",
-			controller: "mainController"
+			// templateUrl : "/static/templates/main.htm",
+			// controller: "mainController"
+			template: "<search-view />"
 		})
 		.when("/words/:lang/:db_id", {
 			templateUrl : "/static/templates/words.htm",

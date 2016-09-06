@@ -7,20 +7,32 @@
 	<meta name="keywords" content="Node.js, JavaScript, ES6, OpenShift, es6, paas, WordNet">
 	<meta name="author" content="Andrew Rather">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link href="/bower/angular-material/angular-material.min.css" rel="stylesheet">
 	<link href="/static/main.css" rel="stylesheet">
-	<script type="text/javascript" src="static/js/angular.min.js"></script>
-	<script type="text/javascript" src="static/js/angular-route.min.js"></script>
+
+	<script type="text/javascript" src="bower/angular/angular.min.js"></script>
+	<script type="text/javascript" src="bower/angular-route/angular-route.min.js"></script>
+	<script type="text/javascript" src="bower/angular-aria/angular-aria.min.js"></script>
+	<script type="text/javascript" src="bower/angular-animate/angular-animate.min.js"></script>
+	<script type="text/javascript" src="bower/angular-material/angular-material.min.js"></script>
 	<script type="text/javascript" src="static/main.js"></script>
 </head>
 <body>
-	<div class="nav">
-		<ul>
-			<li><a href="/#/">Home</a></li>
-			<li><a href="/#/about">About</a></li>
-		</ul>
+	<div ng-controller="AppCtrl as app">
+		<md-content class="md-padding" ng-cloak>
+		    <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+				<md-nav-item md-nav-href="/#/" name="home">Home</md-nav-item>
+				<md-nav-item md-nav-href="/#/about" name="about">About</md-nav-item>
+				<md-nav-item md-nav-href="/#/" name="search">Search</md-nav-item>
+				<!-- these require actual routing with ui-router or ng-route, so they won't work in the demo
+				<md-nav-item md-nav-sref="app.page4" name="page4">Page Four</md-nav-item>
+				<md-nav-item md-nav-href="#page5" name="page5">Page Five</md-nav-item>
+				-->
+		    </md-nav-bar>
+		</md-content>
+		<ng-view>
+			
+		</ng-view>
 	</div>
-	<ng-view>
-		
-	</ng-view>
 </body>
 </html>
