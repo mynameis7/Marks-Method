@@ -1,6 +1,9 @@
 <md-card>
-	<md-card-title>Search</md-card-title>
-	<md-content class="md-padding">
+		<md-card-title-text>
+			<span class="md-headline">Search</span>
+			<span class="md-subhead">Find synset by typing in the search box</span>
+		</md-card-title-text>
+		<md-content class="md-padding">
 		<md-input-container>
 			<label>Word</label>
 			<input ng-model="search.word_search" ng-change="search.updateWordList()" ng-model-options="{debounce: 250}"/>

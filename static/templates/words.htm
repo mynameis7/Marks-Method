@@ -1,4 +1,16 @@
-<md-card>
-	<md-card-title><h1>{{synset.Synset}}</h1></md-card-title>
-	<md-content class="md-padding"><p>{{synset.Definiton}}</p></md-content>
-</md-card>
+<md-content flex layout-xs="column" layout="row" class="md-padding">
+	<md-card>
+		<md-card-title>
+			<span class="md-headline">{{synset.Synset}}</span>
+		</md-card-title>
+		<md-content class="md-padding"><p>{{synset.Definiton}}</p>
+		</md-content>
+	</md-card>
+	<md-card>
+		<md-card-title>
+			<span class="md-headline">{{synset["Jpn Synset"]}}</span>
+		</md-card-title>
+		<md-content class="md-padding"><p>{{synset["Jpn Definition"]}}</p>
+		</md-content>
+	</md-card>
+</md-content>
