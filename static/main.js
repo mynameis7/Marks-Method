@@ -5,6 +5,7 @@
 (function() {
 	function AppCtrl() {
 		var ctrl = this;
+		ctrl.currentNavItem = "home";
 	}
 	angular.module("marks-method").controller("AppCtrl", AppCtrl);
 })();
@@ -42,6 +43,7 @@
 })();
 */
 (function() {
+	wordsController.$inject = ["$scope","$location", "$routeParams", "$http"];
 	function wordsController($scope, $location, $routeParams, $http) {
 		$scope.word = $routeParams.db_id;
 		$scope.eng_definition = "";
@@ -65,7 +67,6 @@
 						}
 					);
 	}
-	wordsController.$inject = ["$scope","$location", "$routeParams", "$http"];
 	angular.module("marks-method").controller("wordsController", wordsController)
 })();
 
@@ -73,7 +74,7 @@
 	let component = (() => {
 		angular.module("marks-method").component('searchView', {
 			controller: SearchController,
-			templateUrl: '/static/templates/main.htm',
+			templateUrl: '/static/templates/search.htm',
 			controllerAs: 'search'
 		});
 	});
