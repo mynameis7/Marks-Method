@@ -23,7 +23,7 @@ function handleErr(err, res) {
 	console.log(err);
 	res.sendStatus(500);
 }
-
+var db = mongojs(connection_string, ["phrase_data", "phrases"])
 /*
 var wordnet = express();
 var phrases = express();
@@ -45,9 +45,9 @@ api.use('/wordnet', wordnet);
 */
 
 api.get('/search', function(req, res, next) {
-	var db = mongojs(connection_string, ['phrase_data']);
+	//var db = mongojs(connection_string, ['phrase_data']);
 	var re = RegExp("\\b" + RegExp.quote(req.query.word) + "\\b", 'i')
-	console.log(re);
+	//console.log(re);
 	db.phrase_data.find({Synset: {$regex: re}}, function(err, docs) {
 		if (err) return handleErr(err, res);
 		res.json(docs);
@@ -65,7 +65,7 @@ api.get('/search', function(req, res, next) {
 api.get('/:lang/synset/:db_id', function(req, res, next) {
 	var id = req.params.db_id;
 	var lang = req.params.lang
-	var db = mongojs(connection_string, ['phrase_data']);
+	//var db = mongojs(connection_string, ['phrase_data']);
 	if(lang === 'en') {
 		db.phrase_data.findOne({"Database ID": id}, function(err, docs) {
 			if(err) return handleErr(err, res);
@@ -74,5 +74,33 @@ api.get('/:lang/synset/:db_id', function(req, res, next) {
 	}
 });
 
+api.get('/:lang/synset/:db_id/phrase', function(req, res, next){
+	var id = req.params.db_id;
+	var lang = req.params.lang;
+	db.phrases.findOne({"Database ID": id, "lang": lang}, function(err, doc){
+		console.log(doc);
+		if(err) return handleErr(err, res);
+		res.json(doc);
+	})
+});
+api.put('/:lang/synset/:db_id/phrase',jsonparser, function(req, res, next) {
+	var id = req.params.db_id;
+	var lang = req.params.lang;
+	var phrase = req.body;
+	//var db = mongojs(connection_string, ['phrase_data']);
+	if(lang === 'en') {
+		db.phrases.findAndModify({
+			query:{"Database ID": id},
+			update: {
+				$set: {phrase: phrase.phrase, lang: phrase.lang }
+			},
+			new: true,
+			upsert: true
+		}, function(err, doc, lastErrorObject) {
+			if(err) return handleErr(err, res);
+			res.sendStatus(200);
+		});
+	}
+});
 
 module.exports = api;

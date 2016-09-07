@@ -1,4 +1,4 @@
-<md-content class="md-padding">
+<md-content flex class="md-padding">
 	<md-card>
 		<md-card-title>
 			<md-card-title-text>
@@ -12,7 +12,7 @@
 				<input ng-model="search.word_search" ng-change="search.updateWordList()" ng-model-options="{debounce: 250}"/>
 			</md-input-container>
 		</md-content>
-		<md-content>
+		<md-content class="md-padding">
 			<md-list flex>
 				<md-list-item ng-repeat="word in search.words"  ng-click="search.findWord(word)">
 					{{word.Synset}}

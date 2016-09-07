@@ -42,32 +42,78 @@
 
 })();
 */
-(function() {
-	wordsController.$inject = ["$scope","$location", "$routeParams", "$http"];
-	function wordsController($scope, $location, $routeParams, $http) {
-		$scope.word = $routeParams.db_id;
-		$scope.eng_definition = "";
-		$scope.synset = {};
-		var lang = $routeParams.lang;
-		var id = $routeParams.db_id
+(() => {
+	let component = (() => {
+		angular.module("marks-method").component("wordView", {
+			controller: wordsController,
+			templateUrl: "/static/templates/words.htm",
+			controllerAs: "word"
+		});
+	});
 
-		var config = {
-			url:"/api/"+lang+"/synset/"+id,
-			method: "GET",
-		};
-		$http(config).then(
-						function success(response){
-							console.log(response.data)
-							$scope.synset = response.data;
-							$scope.eng_definition = $scope.synset.Definition;
-							$scope.word = $scope.synset.Synset;
-						}
-						, function error(response){
-							$scope.eng_definition = "Word not found";
-						}
-					);
+
+	wordsController.$inject = ["$location", "$routeParams", "$http"];
+	function wordsController($location, $routeParams, $http) {
+		var ctrl = this;
+		ctrl.$onInit = onInit;
+
+		function onInit() {
+			ctrl.word = $routeParams.db_id;
+			ctrl.eng_definition = "";
+			ctrl.synset = {};
+			var lang = $routeParams.lang;
+			var id = $routeParams.db_id
+
+			var config = {
+				url:"/api/"+lang+"/synset/"+id,
+				method: "GET",
+			};
+			$http(config).then(
+							function success(response){
+								console.log(response.data)
+								ctrl.synset = response.data;
+								ctrl.eng_definition = ctrl.synset.Definition;
+								ctrl.word = ctrl.synset.Synset;
+							}
+							, function error(response){
+								ctrl.eng_definition = "Word not found";
+							}
+						);
+			$http.get('/api/'+lang+'/synset/'+id+'/phrase').then(
+				function success(response){
+					console.log(response);
+					ctrl.phrase = response.data.phrase
+				}, function error(response) {
+
+			});
+		}
+		ctrl.updatePhrase = function(lang, id) {
+			//console.log(lang, id)
+			var config = {
+				url:"/api/"+lang+"/synset/"+id+"/phrase",
+				method: "PUT",
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: {
+					phrase: ctrl.phrase,
+					lang: lang
+				}
+			};
+			$http(config).then(
+							function success(response){
+								console.log(response);
+							}
+							, function error(response){
+								alert("Unable to update phrase")
+							}
+						);
+		}
+		
 	}
-	angular.module("marks-method").controller("wordsController", wordsController)
+
+	component();
+	//angular.module("marks-method").controller("wordsController", wordsController)
 })();
 
 (() => {
@@ -125,8 +171,9 @@
 			template: "<search-view />"
 		})
 		.when("/words/:lang/:db_id", {
-			templateUrl : "/static/templates/words.htm",
-			controller: "wordsController"
+			// templateUrl : "/static/templates/words.htm",
+			//controller: "wordsController"
+			template: "<word-view />"
 		})
 		.when("/about", {
 			templateUrl : "/static/templates/about.htm"

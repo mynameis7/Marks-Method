@@ -1,16 +1,24 @@
 <md-content flex layout-xs="column" layout="row" class="md-padding">
 	<md-card>
 		<md-card-title>
-			<span class="md-headline">{{synset.Synset}}</span>
+			<md-card-title-text>
+				<span class="md-headline">{{word.synset.Synset}}</span>
+			</md-card-title-text>
 		</md-card-title>
-		<md-content class="md-padding"><p>{{synset.Definiton}}</p>
+		<md-content class="md-padding"><p>{{word.synset.Definiton}}</p>
+		</md-content>
+		<md-content>
+			<md-input-container>
+				<label>English Phrase</label>
+				<input ng-model="word.phrase" ng-change="word.updatePhrase('en',word.synset['Database ID'])" ng-model-options="{debounce: 250}"/>
+			</md-input-container>
 		</md-content>
 	</md-card>
 	<md-card>
 		<md-card-title>
-			<span class="md-headline">{{synset["Jpn Synset"]}}</span>
+			<span class="md-headline">{{word.synset["Jpn Synset"]}}</span>
 		</md-card-title>
-		<md-content class="md-padding"><p>{{synset["Jpn Definition"]}}</p>
+		<md-content class="md-padding"><p>{{word.synset["Jpn Definition"]}}</p>
 		</md-content>
 	</md-card>
 </md-content>
