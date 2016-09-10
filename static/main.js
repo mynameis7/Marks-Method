@@ -85,7 +85,7 @@
 					ctrl.phrase = response.data.phrase
 				}, function error(response) {
 
-			});
+				});
 		}
 		ctrl.updatePhrase = function(lang, id) {
 			//console.log(lang, id)
