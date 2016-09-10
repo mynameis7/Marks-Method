@@ -5,22 +5,22 @@
 	let service = (() => {
 		angular.module("marks-method").factory("comments", CommentsService)
 	})
-	CommentsService.$inject = ["$http", "$interval"];
-	function CommentsService($http, $interval) {
+	CommentsService.$inject = ["$http"];//, "$interval"];
+	function CommentsService($http){//, $interval) {
 		var comments = [];
 		var formattedComments = [];
 		var lang = "";
 		var id = "";
-		var updateInterval = 1000 * 60 * 10;
-		var commentsUpdate = $interval(update, updateInterval)
+		//var updateInterval = 1000 * 60 * 10;
+		//var commentsUpdate = $interval(update, updateInterval)
 
 		function clear() {
 			comments = [];
 			formattedComments = [];
-			$interval.cancel(commentsUpdate);
+			//$interval.cancel(commentsUpdate);
 			lang = "";
 			id = "";
-			updateInterval = 1000 * 60 * 10;
+			//updateInterval = 1000 * 60 * 10;
 		}
 		function getAll() {
 			return comments;
@@ -33,7 +33,7 @@
 			lang = language;
 			id = ident;
 			update();
-			commentsUpdate = $interval(update, updateInterval);
+			//commentsUpdate = $interval(update, updateInterval);
 		}
 		function update(ok_callback, fail_callback) {
 			$http.get('/api/'+lang+'/synset/'+id+'/comments').then(
