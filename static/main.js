@@ -49,7 +49,7 @@
 					}
 				});
 		}
-		function postComment(data) {
+		function postComment(data, callback) {
 			var config = {
 				url:"/api/"+lang+"/synset/"+id+"/comments",
 				method: "POST",
@@ -58,7 +58,10 @@
 				},
 				data: data
 			};
-			$http(config).then();
+			$http(config).then(
+				function success() {
+					callback();
+				});
 		}
 
 		function rootComments(comment, index, array) {
@@ -87,6 +90,7 @@
 			for(var i = 0; i < formattedComments.length; i++) {
 				formattedComments[i].children = buildChildren(formattedComments[i]);
 			}
+			return formattedComments;
 		}
 		return {
 			getComments: getAll,
@@ -95,6 +99,8 @@
 			update: update,
 			clear: clear,
 			setParams: setParams
+			/*comments: comments,
+			formattedComments: formattedComments*/
 		}
 	}
 	service();
@@ -127,9 +133,9 @@
 			ctrl.synset = {};
 			ctrl.updatePhrase = updatePhrase;
 			ctrl.toggleReply = toggleReply;
-			ctrl.forceUpdate = forceUpdate;
-			ctrl.comments = [];
-			ctrl.formattedComments = [];
+			//ctrl.forceUpdate = forceUpdate;
+			ctrl.comments = comments.comments;
+			ctrl.formattedComments = comments.formattedComments;
 			ctrl.activeReply = false;
 			var lang = $routeParams.lang;
 			var id = $routeParams.db_id
@@ -187,12 +193,12 @@
 							}
 						);
 		}
-		function forceUpdate() {
+		/*function forceUpdate() {
 			comments.update(function(cmnts) {
 				ctrl.comments = cmnts;
 				ctrl.formattedComments = comments.getParsed();
 			})
-		}
+		}*/
 		function getComments() {
 
 			ctrl.comments = comments.getComments();
@@ -216,7 +222,7 @@
 			controllerAs: 'comment',
 			bindings: {
 				"comment": "=",
-				"replySubmitCallback": "="
+				"full": "="
 			}
 		});
 	});
@@ -241,6 +247,7 @@
 		function toggleReply() {
 			ctrl.activeReply = !ctrl.activeReply;
 		}
+
 	
 
 	}
@@ -256,7 +263,7 @@
 			bindings: {
 				"parent": "=",
 				"showing": "=",
-				"onSubmit": "&"
+				"full": "="
 			}
 		})
 	})
@@ -267,13 +274,19 @@
 		ctrl.author = "";
 		ctrl.text = "";
 		ctrl.submit = function() {
-			comments.postComment({author: ctrl.author, text: ctrl.text, parent: ctrl.parent});
-			comments.update();
+			comments.postComment({author: ctrl.author, text: ctrl.text, parent: ctrl.parent}, function(){
+				comments.update(function(cmnts) {
+					ctrl.full = comments.getParsed();
+				})
+			});
+			/*comments.update(function(cmnts){
+				comments.comments = cmnts;
+				comments.formattedComments = comments.getParsed();
+			});*/
 			ctrl.author = "";
 			ctrl.text = "";
-			ctrl.onSubmit();
 			ctrl.showing = false;
-		}
+		}	
 	}
 	component();
 })();

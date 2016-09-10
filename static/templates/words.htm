@@ -1,4 +1,4 @@
-<md-content flex layout-xs="column" layout="row" layout-wrap><!--flex layout-xs="column" layout="row" class="md-padding">-->
+<md-content flex layout-xs="column" layout="row"><!--flex layout-xs="column" layout="row" class="md-padding">-->
 	<md-content class="md-padding">
 		<md-card>
 			<md-card-title>
@@ -23,8 +23,8 @@
 					</md-card-title>
 					<md-content>
 						<md-button class="md-raised" ng-click="word.toggleReply()">Post</md-button>
-						<reply-box showing="word.activeReply" on-submit="word.forceUpdate()"></reply-box>
-						<comment-view ng-repeat="comment in word.formattedComments" comment="comment" reply-submit-callback="word.forceUpdate"></comment-view>
+						<reply-box showing="word.activeReply" full="word.formattedComments"></reply-box>
+						<comment-view ng-repeat="comment in word.formattedComments" comment="comment" full="word.formattedComments"></comment-view>
 					</md-content>
 				</md-card>
 			</md-content>
