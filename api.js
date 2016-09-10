@@ -23,7 +23,7 @@ function handleErr(err, res) {
 	console.log(err);
 	res.sendStatus(500);
 }
-var db = mongojs(connection_string, ["phrase_data", "phrases"])
+var db = mongojs(connection_string, ["phrase_data", "phrases", "comments"])
 /*
 var wordnet = express();
 var phrases = express();
@@ -78,7 +78,6 @@ api.get('/:lang/synset/:db_id/phrase', function(req, res, next){
 	var id = req.params.db_id;
 	var lang = req.params.lang;
 	db.phrases.findOne({"Database ID": id, "lang": lang}, function(err, doc){
-		console.log(doc);
 		if(err) return handleErr(err, res);
 		res.json(doc);
 	})
@@ -101,6 +100,32 @@ api.put('/:lang/synset/:db_id/phrase',jsonparser, function(req, res, next) {
 			res.sendStatus(200);
 		});
 	}
+});
+
+
+api.post('/:lang/synset/:db_id/comments', jsonparser, function(req, res, next) {
+
+	var id = req.params.db_id;
+	var lang = req.params.lang;
+	var comment = req.body;
+	var temp = db.comments.insert({
+		"Database ID": id,
+		"lang": lang,
+		"text": comment.text,
+		"parent": comment.parent,
+		"author": comment.author, 
+		"date": new Date()
+	});
+	res.sendStatus(200);
+});
+
+api.get('/:lang/synset/:db_id/comments', function(req, res, next){
+	var id = req.params.db_id;
+	var lang = req.params.lang;
+	db.comments.find({"Database ID": id, "lang": lang}, function(err, docs) {
+		if(err) return handleErr(err, res);
+		res.json(docs);
+	});
 });
 
 module.exports = api;

@@ -6,5 +6,10 @@
 	</md-card-title>
 	<md-content class="md-padding">
 		<p>{{comment.text}}</p>
+		<md-button class="md-raised" ng-click="comment.toggleReply()">Reply</md-button>
+		<reply-box parent="comment.id" showing="comment.activeReply" on-submit="comment.replySubmitCallback()"/>
+	</md-content>
+	<md-content>
+		<comment-view ng-repeat="child in comment.children" comment="child" reply-submit-callback="ctrl.replySubmitCallback"></comment-view>
 	</md-content>
 </md-card>

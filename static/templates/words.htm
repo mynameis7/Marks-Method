@@ -1,36 +1,42 @@
-<md-content flex layout-xs="column" layout="row" class="md-padding">
-	<md-card>
-		<md-card-title>
-			<md-card-title-text>
-				<span class="md-headline">{{word.synset.Synset}}</span>
-			</md-card-title-text>
-		</md-card-title>
-		<md-content class="md-padding"><p>{{word.synset.Definiton}}</p>
-		</md-content>
-		<md-content>
-			<md-input-container>
-				<label>English Phrase</label>
-				<input ng-model="word.phrase" ng-change="word.updatePhrase('en',word.synset['Database ID'])" ng-model-options="{debounce: 250}"/>
-			</md-input-container>
-		</md-content>
-		<md-content>
-			<md-card>
-				<md-card-title>
-					<md-card-title-text>
-						<span class="md-headline">Comments</span>
-					</md-card-title-text>
-				</md-card-title>
-				<md-content class="md-padding">
-					<p> temp </p>
-				</md-content>
-			</md-card>
-		</md-content>
-	</md-card>
-	<md-card>
-		<md-card-title>
-			<span class="md-headline">{{word.synset["Jpn Synset"]}}</span>
-		</md-card-title>
-		<md-content class="md-padding"><p>{{word.synset["Jpn Definition"]}}</p>
-		</md-content>
-	</md-card>
+<md-content flex layout-xs="column" layout="row" layout-wrap><!--flex layout-xs="column" layout="row" class="md-padding">-->
+	<md-content class="md-padding">
+		<md-card>
+			<md-card-title>
+				<md-card-title-text wrap>
+					<span class="md-headline">{{word.synset.Synset}}</span>
+				</md-card-title-text>
+			</md-card-title>
+			<md-content class="md-padding"><p>{{word.synset.Definiton}}</p>
+			</md-content>
+			<md-content class="md-padding">
+				<md-input-container>
+					<label>English Phrase</label>
+					<input ng-model="word.phrase" ng-change="word.updatePhrase('en',word.synset['Database ID'])" ng-model-options="{debounce: 250}"/>
+				</md-input-container>
+			</md-content>
+			<md-content>
+				<md-card>
+					<md-card-title>
+						<md-card-title-text>
+							<span class="md-headline">Comments</span>
+						</md-card-title-text>
+					</md-card-title>
+					<md-content>
+						<md-button class="md-raised" ng-click="word.toggleReply()">Post</md-button>
+						<reply-box showing="word.activeReply" on-submit="word.forceUpdate()"></reply-box>
+						<comment-view ng-repeat="comment in word.formattedComments" comment="comment" reply-submit-callback="word.forceUpdate"></comment-view>
+					</md-content>
+				</md-card>
+			</md-content>
+		</md-card>
+	</md-content>
+	<!--<md-content class="md-padding">
+		<md-card>
+			<md-card-title>
+				<span class="md-headline">{{word.synset["Jpn Synset"]}}</span>
+			</md-card-title>
+			<md-content class="md-padding"><p>{{word.synset["Jpn Definition"]}}</p>
+			</md-content>
+		</md-card>
+	</md-content>-->
 </md-content>
