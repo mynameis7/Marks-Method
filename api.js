@@ -24,25 +24,25 @@ function handleErr(err, res) {
 	res.sendStatus(500);
 }
 var db = mongojs(connection_string, ["wordnet_data", "phrase_data", "phrases", "comments"])
-/*
+
 var wordnet = express();
 var phrases = express();
 
 wordnet.post('/add', jsonparser, function(req, res) {
-	var db = mongojs(connection_string, ['wordnet_data']);
+	//var db = mongojs(connection_string, ['wordnet_data']);
     db.wordnet_data.insert(req.body);
     res.sendStatus(200);
 });
 
 phrases.post('/add', jsonparser, function(req, res) {
-	var db = mongojs(connection_string, ['phrase_data']);
+	//var db = mongojs(connection_string, ['phrase_data']);
 	db.phrase_data.insert(req.body);
 	res.sendStatus(200);
 })
 
 api.use('/phrases', phrases);
 api.use('/wordnet', wordnet);
-*/
+
 
 api.get('/search', function(req, res, next) {
 	//var db = mongojs(connection_string, ['phrase_data']);

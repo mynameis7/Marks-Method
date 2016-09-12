@@ -356,5 +356,5 @@
 			template: "<h3>Url Not Found</h3>"
 		})
 	});
-})()
+})();
 
