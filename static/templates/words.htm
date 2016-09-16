@@ -2,7 +2,7 @@
 	<md-content class="md-padding">
 		<md-card>
 			<md-card-title>
-				<md-card-title-text wrap>
+				<md-card-title-text>
 					<span class="md-headline">{{word.synset.Synset}}</span>
 				</md-card-title-text>
 			</md-card-title>
@@ -16,14 +16,14 @@
 			</md-content>
 		</md-card>
 	</md-content>
-	<md-content>
+	<md-content class="md-padding">
 		<md-card>
 			<md-card-title>
 				<md-card-title-text>
 					<span class="md-headline">Comments</span>
 				</md-card-title-text>
 			</md-card-title>
-			<md-content>
+			<md-content class="md-padding">
 				<md-button class="md-raised" ng-click="word.toggleReply()">Post</md-button>
 				<reply-box showing="word.activeReply" full="word.formattedComments"></reply-box>
 				<comment-view ng-repeat="comment in word.formattedComments" comment="comment" full="word.formattedComments"></comment-view>
