@@ -92,9 +92,8 @@ api.put('/:lang/synset/:db_id/phrase',jsonparser, function(req, res, next) {
 	var lang = req.params.lang;
 	var phrase = req.body;
 	//var db = mongojs(connection_string, ['phrase_data']);
-	if(lang === 'en') {
 		db.phrases.findAndModify({
-			query:{"Database ID": id},
+			query:{"Database ID": id, "lang": lang},
 			update: {
 				$set: {phrase: phrase.phrase, lang: phrase.lang }
 			},
@@ -104,7 +103,6 @@ api.put('/:lang/synset/:db_id/phrase',jsonparser, function(req, res, next) {
 			if(err) return handleErr(err, res);
 			res.sendStatus(200);
 		});
-	}
 });
 
 

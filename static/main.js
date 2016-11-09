@@ -156,7 +156,8 @@
 								ctrl.eng_definition = "Word not found";
 							}
 						);
-			getPhrase(lang, id);
+			getPhrase("en", id);
+			getPhrase("jpn", id);
 			comments.update(function(cmts) {
 				ctrl.comments = cmts;
 				ctrl.formattedComments = comments.getParsed();
@@ -166,13 +167,18 @@
 		function getPhrase(lang, id) {
 			$http.get('/api/'+lang+'/synset/'+id+'/phrase').then(
 				function success(response){
-					if(response.data)
-						ctrl.phrase = response.data.phrase
+					if(response.data) {
+						if(lang === "en")
+							ctrl.phrase = response.data.phrase
+						else if(lang === "jpn") {
+							ctrl.jp_phrase = response.data.phrase
+						}
+					}
 				}, function error(response) {
 
 				});	
 		}
-		function updatePhrase(lang, id) {
+		function updatePhrase(lang, id, phrase) {
 			var config = {
 				url:"/api/"+lang+"/synset/"+id+"/phrase",
 				method: "PUT",
@@ -180,7 +186,7 @@
 					'Content-Type': 'application/json'
 				},
 				data: {
-					phrase: ctrl.phrase,
+					phrase: phrase,
 					lang: lang
 				}
 			};
