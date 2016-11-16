@@ -1,6 +1,7 @@
 var express = require("express");
 var bodyparser = require("body-parser");
 var mongojs = require("mongojs");
+var stringSimilarity = require("string-similarity");
 var jsonparser = bodyparser.json();
 var api = express();
 
@@ -50,8 +51,22 @@ api.get('/search', function(req, res, next) {
 	//console.log(re);
 	db.wordnet_data.find({Synset: {$regex: re}}, {"Database ID": 1, "Synset": 1, "Definition":1}, function(err, docs) {
 		if (err) return handleErr(err, res);
-
-		res.json(docs);
+		var newDocs = [];
+		for(var i in docs) {
+			var doc = docs[i];
+			console.log(doc);
+			var delimited = doc.Synset.split(",");
+			if(delimited.length > 0) {
+				for(var j in delimited) {
+					var word = delimited[j];
+					if(word === req.query.word) {
+						newDocs.push(doc);
+						break;
+					}
+				}
+			}
+		}
+		res.json(newDocs);
 	})
 	//var re = RegExp("\b" + req.query.word + "\b")
 	//db.phrase_data.ensureIndex({Synset:"text"});
@@ -65,7 +80,14 @@ api.get('/search', function(req, res, next) {
 
 api.get('/search_phrase', function(req, res, next) {
 	res.sendStatus(200);
-})
+});
+
+api.get('/phrase_count/:db_id', function(req, res, next) {
+	db.phrases.find({"Database ID": id}, function(err, docs) {
+		if(err) return handleErr(err, res);
+		res.send(docs.length);
+	})
+}) ;
 
 api.get('/:lang/synset/:db_id', function(req, res, next) {
 	var id = req.params.db_id;
