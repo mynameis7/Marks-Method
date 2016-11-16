@@ -315,6 +315,23 @@
 			ctrl.word_search = "";
 			ctrl.words = [];
 		}
+
+		function filterWords(query, data) {
+			var newData = [];
+			for(var i = 0; i < data.lengt; i++) {
+				var word = data[i].Synset;
+				var delimiter = word.split(",");
+				if(delimiter.length > 0) {
+					for(var j = 0; j < delimiter.length; j++) {
+						if(delimiter[j].toLowerCase() === query.toLowerCase()) {
+							newData.push(data[i]);
+							break;
+						}
+					}
+				}
+			}
+			return newData;
+		}
 		ctrl.findWord = function(synset){
 				$location.path('/words/en/' + synset['Database ID']);
 		}
@@ -329,7 +346,7 @@
 				};
 				$http(config).then(
 					function success(response) {
-						ctrl.words = response.data;
+						ctrl.words = filterWords(ctrl.word_search, response.data);
 					}, function error(response) {
 						ctrl.words = [];
 					}
