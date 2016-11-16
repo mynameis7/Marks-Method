@@ -346,7 +346,7 @@
 				};
 				$http(config).then(
 					function success(response) {
-						ctrl.words = filterWords(ctrl.word_search, response.data);
+						ctrl.words = response.data;//filterWords(ctrl.word_search, response.data);
 					}, function error(response) {
 						ctrl.words = [];
 					}
