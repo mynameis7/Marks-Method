@@ -9,9 +9,9 @@
 			<md-content class="md-padding"><p>{{word.synset.Definiton}}</p>
 			</md-content>
 			<md-content class="md-padding">
-				<md-input-container>
+				<md-input-container class="phrase-box">
 					<label>English Phrase</label>
-					<input ng-model="word.phrase" ng-change="word.updatePhrase('en',word.synset['Database ID'], word.phrase)" ng-model-options="{debounce: 250}"/>
+					<textarea ng-model="word.phrase" ng-change="word.updatePhrase('en',word.synset['Database ID'], word.phrase)" ng-model-options="{debounce: 250}"/>
 				</md-input-container>
 			</md-content>
 		</md-card>
@@ -24,9 +24,9 @@
 			<md-content class="md-padding"><p>{{word.synset["Jpn Definition"]}}</p>
 			</md-content>
 			<md-content class="md-padding">
-				<md-input-container>
+				<md-input-container class="phrase-box">
 					<label>Japanese Phrase</label>
-					<input ng-model="word.jp_phrase" ng-change="word.updatePhrase('jpn',word.synset['Database ID'], word.jp_phrase)" ng-model-options="{debounce: 250}"/>
+					<textarea ng-model="word.jp_phrase" ng-change="word.updatePhrase('jpn',word.synset['Database ID'], word.jp_phrase)" ng-model-options="{debounce: 250}"/>
 				</md-input-container>
 			</md-content>
 		</md-card>
