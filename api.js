@@ -44,6 +44,24 @@ phrases.post('/add', jsonparser, function(req, res) {
 api.use('/phrases', phrases);
 api.use('/wordnet', wordnet);
 
+function filterWords(query, data) {
+	var newData = [];
+	for(var i = 0; i < data.length; i++) {
+		var word = data[i].Synset;
+		console.log(word);
+		var delimiter = word.split(",");
+		console.log(delimiter);
+		if(delimiter.length > 0) {
+			for(var j = 0; j < delimiter.length; j++) {
+				if(delimiter[j].toLowerCase() === query.toLowerCase()) {
+					newData.push(data[i]);
+					break;
+				}
+			}
+		}
+	}
+	return newData;
+}
 
 api.get('/search', function(req, res, next) {
 	//var db = mongojs(connection_string, ['phrase_data']);
@@ -51,7 +69,12 @@ api.get('/search', function(req, res, next) {
 	//console.log(re);
 	db.wordnet_data.find({Synset: {$regex: re}}, {"Database ID": 1, "Synset": 1, "Definition":1}, function(err, docs) {
 		if (err) return handleErr(err, res);
-		res.json(docs);
+		var word = req.query.word;
+		console.log(docs.length)
+		var newDocs = filterWords(word, docs);
+		//console.log(docs);
+	//	console.log(newDocs)
+		res.json(newDocs);
 	})
 	//var re = RegExp("\b" + req.query.word + "\b")
 	//db.phrase_data.ensureIndex({Synset:"text"});
