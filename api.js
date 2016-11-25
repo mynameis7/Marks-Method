@@ -48,9 +48,9 @@ function filterWords(query, data) {
 	var newData = [];
 	for(var i = 0; i < data.length; i++) {
 		var word = data[i].Synset;
-		console.log(word);
+		//console.log(word);
 		var delimiter = word.split(",");
-		console.log(delimiter);
+		//console.log(delimiter);
 		if(delimiter.length > 0) {
 			for(var j = 0; j < delimiter.length; j++) {
 				if(delimiter[j].toLowerCase() === query.toLowerCase()) {
@@ -70,7 +70,7 @@ api.get('/search', function(req, res, next) {
 	db.wordnet_data.find({Synset: {$regex: re}}, {"Database ID": 1, "Synset": 1, "Definition":1}, function(err, docs) {
 		if (err) return handleErr(err, res);
 		var word = req.query.word;
-		console.log(docs.length)
+		//console.log(docs.length)
 		var newDocs = filterWords(word, docs);
 		//console.log(docs);
 	//	console.log(newDocs)
