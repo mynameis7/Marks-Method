@@ -1,3 +1,9 @@
 .phrase-box {
     width:60%;
 }
+
+@media( max-width: 960px ) {
+    .phrase-box {
+        width: 100%;
+    }
+}

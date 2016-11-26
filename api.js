@@ -34,6 +34,20 @@ wordnet.post('/add', jsonparser, function(req, res) {
     db.wordnet_data.insert(req.body);
     res.sendStatus(200);
 });
+wordnet.post('/addlink', jsonparser, function(req, res) {
+	var eng_define = req.data.eng_link;
+	var jpn_define = req.data.jp_link;
+	var id = req.data.id;
+	db.wordnet_data.findAndModify({
+		query: {"Database ID": id},
+		update: {$set: {"eng_define": eng_define, "jpn_define": jpn_define}},
+		new: true,
+		upsert: true
+	}, function(err, doc, lastErrorObject) {
+		if(err) return handleErr(err, res);
+		res.sendStatus(200);
+	});
+});
 
 phrases.post('/add', jsonparser, function(req, res) {
 	//var db = mongojs(connection_string, ['phrase_data']);
@@ -48,9 +62,7 @@ function filterWords(query, data) {
 	var newData = [];
 	for(var i = 0; i < data.length; i++) {
 		var word = data[i].Synset;
-		//console.log(word);
 		var delimiter = word.split(",");
-		//console.log(delimiter);
 		if(delimiter.length > 0) {
 			for(var j = 0; j < delimiter.length; j++) {
 				if(delimiter[j].toLowerCase() === query.toLowerCase()) {
@@ -66,14 +78,10 @@ function filterWords(query, data) {
 api.get('/search', function(req, res, next) {
 	//var db = mongojs(connection_string, ['phrase_data']);
 	var re = RegExp("\\b" + RegExp.quote(req.query.word) + "\\b", 'i')
-	//console.log(re);
 	db.wordnet_data.find({Synset: {$regex: re}}, {"Database ID": 1, "Synset": 1, "Definition":1}, function(err, docs) {
 		if (err) return handleErr(err, res);
 		var word = req.query.word;
-		//console.log(docs.length)
 		var newDocs = filterWords(word, docs);
-		//console.log(docs);
-	//	console.log(newDocs)
 		res.json(newDocs);
 	})
 	//var re = RegExp("\b" + req.query.word + "\b")
