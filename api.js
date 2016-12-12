@@ -35,11 +35,11 @@ wordnet.post('/add', jsonparser, function(req, res) {
     res.sendStatus(200);
 });
 wordnet.post('/addlink', jsonparser, function(req, res) {
-	var eng_link= req.data.eng_link;
-	var jpn_link = req.data.jp_link;
-	var define_link = req.data.define_link;
-	var sem_field = req.data.sem_field;
-	var id = req.data.id;
+	var eng_link= req.body.eng_link;
+	var jpn_link = req.boy.jp_link;
+	var define_link = req.body.define_link;
+	var sem_field = req.body.sem_field;
+	var id = req.body.id;
 	db.wordnet_data.findAndModify({
 		query: {"Database ID": id},
 		update: {$set: {"eng_wordnet": eng_link, "jpn_wordnet": jpn_link, "define": define_link, "semantic_field": sem_field}},
