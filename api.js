@@ -36,7 +36,7 @@ wordnet.post('/add', jsonparser, function(req, res) {
 });
 wordnet.post('/addlink', jsonparser, function(req, res) {
 	var eng_link= req.body.eng_link;
-	var jpn_link = req.boy.jp_link;
+	var jpn_link = req.body.jp_link;
 	var define_link = req.body.define_link;
 	var sem_field = req.body.sem_field;
 	var id = req.body.id;
