@@ -13,6 +13,7 @@
 					<label>English Phrase</label>
 					<textarea ng-model="word.phrase" ng-change="word.updatePhrase('en',word.synset['Database ID'], word.phrase)" ng-model-options="{debounce: 250}"></textarea>
 				</md-input-container>
+				<div><a ng-href="{{word.synset.eng_link}}">English Wordnet</a></div>
 			</md-content>
 		</md-card>
 	</md-content>
@@ -28,6 +29,7 @@
 					<label>Japanese Phrase</label>
 					<textarea ng-model="word.jp_phrase" ng-change="word.updatePhrase('jpn',word.synset['Database ID'], word.jp_phrase)" ng-model-options="{debounce: 250}"></textarea>
 				</md-input-container>
+				<div><a ng-href="{{word.synset.jp_link}}">Japanese Wordnet</a></div>
 			</md-content>
 		</md-card>
 	</md-content>
