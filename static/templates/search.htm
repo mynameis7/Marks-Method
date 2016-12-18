@@ -15,7 +15,9 @@
 		<md-content class="md-padding">
 			<md-list flex>
 				<md-list-item ng-repeat="word in search.words"  ng-click="search.findWord(word)">
-					{{word.Synset}}
+					<span class="md-subhead spacing">{{word["Semantic Field"]}}</span> <span class="md-headline spacing"><strong>{{word.Synset}}</strong></span> <span class="md-subhead spacing">{{word.Definiton}}</span>
+                    <md-divider ng-if="!$last"></md-divider>
+
 					<!--<div class="test" ng-repeat="(key, value) in word">{{key}} - {{value}}</div>-->
 				</md-list-item>
 			</md-list>

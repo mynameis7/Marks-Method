@@ -80,7 +80,7 @@ function filterWords(query, data) {
 api.get('/search', function(req, res, next) {
 	//var db = mongojs(connection_string, ['phrase_data']);
 	var re = RegExp("\\b" + RegExp.quote(req.query.word) + "\\b", 'i')
-	db.wordnet_data.find({Synset: {$regex: re}}, {"Database ID": 1, "Synset": 1, "Definition":1}, function(err, docs) {
+	db.wordnet_data.find({Synset: {$regex: re}}, {"Database ID": 1, "Synset": 1, "Definiton":1, "Semantic Field":1}, function(err, docs) {
 		if (err) return handleErr(err, res);
 		var word = req.query.word;
 		var newDocs = filterWords(word, docs);
