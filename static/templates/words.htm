@@ -14,6 +14,7 @@
 					<textarea ng-model="word.phrase" ng-change="word.updatePhrase('en',word.synset['Database ID'], word.phrase)" ng-model-options="{debounce: 250}"></textarea>
 				</md-input-container>
 				<div><a ng-href="{{word.synset.eng_wordnet}}">English Wordnet</a></div>
+				<div><a ng-href="{{word.define_link}}">English Definition</a></div>
 			</md-content>
 		</md-card>
 	</md-content>

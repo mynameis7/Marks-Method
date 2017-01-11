@@ -137,6 +137,7 @@
 			ctrl.comments = comments.comments;
 			ctrl.formattedComments = comments.formattedComments;
 			ctrl.activeReply = false;
+			ctrl.define_link
 			var lang = $routeParams.lang;
 			var id = $routeParams.db_id
 			comments.clear();
@@ -151,6 +152,8 @@
 								ctrl.synset = response.data;
 								ctrl.eng_definition = ctrl.synset.Definition;
 								ctrl.word = ctrl.synset.Synset;
+								ctrl.define_link = "https://www.google.com/#safe=active&q=define:" + getSearchWord(ctrl.synset.Synset);
+
 							}
 							, function error(response){
 								ctrl.eng_definition = "Word not found";
@@ -214,6 +217,15 @@
 			ctrl.activeReply = !ctrl.activeReply;
 		}
 		
+		function getSearchWord(synset) {
+			var newData = [];
+			var word = synset;
+			var delimiter = word.split(",");
+			if(delimiter.length > 0) {
+				return delimiter[0];
+			}
+			return "";
+		}
 	}
 
 	component();
