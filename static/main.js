@@ -377,19 +377,22 @@
 		.when("/", {
 			// templateUrl : "/static/templates/main.htm",
 			// controller: "mainController"
-			template: "<search-view />"
+			template: "<search-view></search-view>"
 		})
 		.when("/words/:lang/:db_id", {
 			// templateUrl : "/static/templates/words.htm",
 			//controller: "wordsController"
-			template: "<word-view />"
+			template: "<word-view></word-view>"
 		})
 		.when("/about", {
 			templateUrl : "/static/templates/about.htm"
 		})
+		.when("/list", {
+			template: "<list-view></list-view>"
+		})
 		.otherwise( {
 			template: "<h3>Url Not Found</h3>"
-		})
+		});
 	});
 })();
 
