@@ -3,7 +3,7 @@ var bodyparser = require("body-parser");
 var mongojs = require("mongojs");
 var stringSimilarity = require("string-similarity");
 var jsonparser = bodyparser.json();
-var api = express();
+var api = express.Router();
 
 RegExp.quote = function(str) {
     return (str+'').replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
@@ -26,8 +26,8 @@ function handleErr(err, res) {
 }
 var db = mongojs(connection_string, ["wordnet_data", "phrase_data", "phrases", "comments"])
 
-var wordnet = express();
-var phrases = express();
+var wordnet = express.Router();
+var phrases = express.Router();
 
 wordnet.post('/add', jsonparser, function(req, res) {
 	//var db = mongojs(connection_string, ['wordnet_data']);

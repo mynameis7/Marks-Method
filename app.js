@@ -4,6 +4,11 @@ var express = require('express');
 var main = express();
 var api = require('./api.js');
 var gapi = require('./gapi.js');
+main.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 main.get('/', function(req, res, next) {
 	res.sendFile(path.resolve('./static/index.html'));
 });
