@@ -1,6 +1,32 @@
 (function() {
 	angular.module("marks-method", ["ngRoute", "ngMaterial"])
 })();
+
+(() => {
+	let service = (() => {
+		angular.module("marks-method").factory("wordnet", wordnetApi);
+	});
+	wordnetApi.$inject = ["$q","$http"];
+	function wordnetApi($q, $http) {
+		let _url = "";
+		function setBaseUrl(url) {
+			_url = url;
+		}
+		function prependConfig(config) {
+			config.url = _url + config.url;
+		}
+		function search(word) {
+			let config = {
+				url: "/api/search",
+				method: "GET",
+				params: {word: word}
+			};
+			prependConfig(config);
+			return $http(config);
+		}
+	}
+})();
+
 (() => {
 	let service = (() => {
 		angular.module("marks-method").factory("comments", CommentsService)
@@ -318,8 +344,8 @@
 		});
 	});
 
-	SearchController.$inject = ["$location", "$log", "$http"];
-	function SearchController($location, $log, $http) {
+	SearchController.$inject = ["$location", "$log", "$http", "wordnetApi"];
+	function SearchController($location, $log, $http, wordnetApi) {
 		var ctrl = this;
 		ctrl.$onInit = onInit;
 		function onInit() {
@@ -351,12 +377,7 @@
 			if(ctrl.word_search === "")
 				ctrl.words = [];
 			else {
-				var config = {
-					url:"/api/search",
-					method: "GET",
-					params: {word: ctrl.word_search}
-				};
-				$http(config).then(
+				wordnetApi.search(ctrl.word_search).then(
 					function success(response) {
 						ctrl.words = response.data;//filterWords(ctrl.word_search, response.data);
 					}, function error(response) {
