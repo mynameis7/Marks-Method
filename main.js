@@ -4,7 +4,7 @@
 
 (() => {
 	let service = (() => {
-		angular.module("marks-method").factory("wordnet", wordnetApi);
+		angular.module("marks-method").factory("wordnetApi", wordnetApi);
 	});
 	wordnetApi.$inject = ["$q","$http"];
 	function wordnetApi($q, $http) {
@@ -24,7 +24,13 @@
 			prependConfig(config);
 			return $http(config);
 		}
+		return {
+			setBaseUrl: setBaseUrl,
+			prependConfig: prependConig,
+			search: search
+		}
 	}
+	service();
 })();
 
 (() => {
