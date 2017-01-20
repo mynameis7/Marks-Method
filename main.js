@@ -26,7 +26,7 @@
 		}
 		return {
 			setBaseUrl: setBaseUrl,
-			prependConfig: prependConig,
+			prependConfig: prependConfig,
 			search: search
 		}
 	}
