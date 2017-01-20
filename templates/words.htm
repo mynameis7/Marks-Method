@@ -1,0 +1,51 @@
+<md-content><!--flex layout-xs="column" layout="row" class="md-padding">-->
+	<md-content class="md-padding">
+		<md-card>
+			<md-card-title>
+				<md-card-title-text>
+					<span class="md-headline">{{word.synset.Synset}}</span>
+				</md-card-title-text>
+			</md-card-title>
+			<md-content class="md-padding"><p>{{word.synset.Definiton}}</p>
+			</md-content>
+			<md-content class="md-padding">
+				<md-input-container class="phrase-box">
+					<label>English Phrase</label>
+					<textarea ng-model="word.phrase" ng-change="word.updatePhrase('en',word.synset['Database ID'], word.phrase)" ng-model-options="{debounce: 250}"></textarea>
+				</md-input-container>
+				<div><a ng-href="{{word.synset.eng_wordnet}}">English Wordnet</a></div>
+				<div><a ng-href="{{word.define_link}}">English Definition</a></div>
+			</md-content>
+		</md-card>
+	</md-content>
+	<md-content class="md-padding">
+		<md-card>
+			<md-card-title>
+				<span class="md-headline">{{word.synset["Jpn Synset"]}}</span>
+			</md-card-title>
+			<md-content class="md-padding"><p>{{word.synset["Jpn Definition"]}}</p>
+			</md-content>
+			<md-content class="md-padding">
+				<md-input-container class="phrase-box">
+					<label>Japanese Phrase</label>
+					<textarea ng-model="word.jp_phrase" ng-change="word.updatePhrase('jpn',word.synset['Database ID'], word.jp_phrase)" ng-model-options="{debounce: 250}"></textarea>
+				</md-input-container>
+				<div><a ng-href="{{word.synset.jpn_wordnet}}">Japanese Wordnet</a></div>
+			</md-content>
+		</md-card>
+	</md-content>
+	<md-content class="md-padding">
+		<md-card>
+			<md-card-title>
+				<md-card-title-text>
+					<span class="md-headline">Comments</span>
+				</md-card-title-text>
+			</md-card-title>
+			<md-content class="md-padding">
+				<md-button class="md-raised" ng-click="word.toggleReply()">Post</md-button>
+				<reply-box showing="word.activeReply" full="word.formattedComments"></reply-box>
+				<comment-view ng-repeat="comment in word.formattedComments" comment="comment" full="word.formattedComments"></comment-view>
+			</md-content>
+		</md-card>
+	</md-content>
+</md-content>

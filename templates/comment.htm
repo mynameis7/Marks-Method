@@ -1,0 +1,15 @@
+<md-card>
+	<md-card-title>
+		<md-card-title-text>
+			<span>{{comment.author}}</span>
+		</md-card-title-text>
+	</md-card-title>
+	<md-content class="md-padding">
+		<p>{{comment.text}}</p>
+		<md-button class="md-raised" ng-click="comment.toggleReply()">Reply</md-button>
+		<reply-box parent="comment.id" showing="comment.activeReply" full="comment.full"/>
+	</md-content>
+	<md-content>
+		<comment-view ng-repeat="child in comment.children" comment="child" full="comment.full"></comment-view>
+	</md-content>
+</md-card>

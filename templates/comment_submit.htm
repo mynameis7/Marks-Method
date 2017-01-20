@@ -1,0 +1,11 @@
+<md-content ng-show="reply.showing" class="md-padding">
+	<md-input-container class="md-block">
+		<label>Name</label>
+		<input ng-model="reply.author"/>
+	</md-input-container>
+	<md-input-container class="md-block">
+		<label>Comment</label>
+		<textarea ng-model="reply.text" row="3"></textarea>
+	</md-input-container>
+	<md-button class="md-raised md-primary" ng-click="reply.submit()">Submit</md-button>
+</md-content>

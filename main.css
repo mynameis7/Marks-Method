@@ -1,0 +1,12 @@
+.phrase-box {
+    width:60%;
+}
+.spacing {
+    margin: 3px;
+}
+
+@media( max-width: 960px ) {
+    .phrase-box {
+        width: 100%;
+    }
+}
