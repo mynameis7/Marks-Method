@@ -385,7 +385,7 @@
 			template: "<word-view></word-view>"
 		})
 		.when("/about", {
-			templateUrl : "/static/templates/about.htm"
+			templateUrl : "templates/about.htm"
 		})
 		.when("/list", {
 			template: "<list-view></list-view>"
