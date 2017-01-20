@@ -117,7 +117,7 @@
 	let component = (() => {
 		angular.module("marks-method").component("wordView", {
 			controller: wordsController,
-			templateUrl: "/static/templates/words.htm",
+			templateUrl: "templates/words.htm",
 			controllerAs: "word"
 		});
 	});
@@ -236,7 +236,7 @@
 	let component = (() => {
 		angular.module("marks-method").component('commentView', {
 			controller: CommentController,
-			templateUrl: '/static/templates/comment.htm',
+			templateUrl: 'templates/comment.htm',
 			controllerAs: 'comment',
 			bindings: {
 				"comment": "=",
@@ -276,7 +276,7 @@
 	let component = (() => {
 		angular.module("marks-method").component("replyBox",{
 			controller: ReplyController,
-			templateUrl: "/static/templates/comment_submit.htm",
+			templateUrl: "templates/comment_submit.htm",
 			controllerAs: "reply",
 			bindings: {
 				"parent": "=",
@@ -313,7 +313,7 @@
 	let component = (() => {
 		angular.module("marks-method").component('searchView', {
 			controller: SearchController,
-			templateUrl: '/static/templates/search.htm',
+			templateUrl: 'templates/search.htm',
 			controllerAs: 'search'
 		});
 	});
