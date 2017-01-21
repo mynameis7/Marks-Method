@@ -37,6 +37,7 @@
 				url: "/api/" + lang + "/synset/" + id + "/phrase",
 				method: "GET"
 			}
+			prependConfig(config)
 			return $http(config);
 		}
 		function updatePhrase(lang, id, phrase) {
@@ -51,6 +52,7 @@
 					lang: lang
 				}
 			};
+			prependConfig(config);
 			return $http(config);
 		}
 		return {
