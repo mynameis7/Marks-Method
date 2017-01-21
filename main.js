@@ -24,10 +24,41 @@
 			prependConfig(config);
 			return $http(config);
 		}
+		function getSynset(lang, id) {
+			let config = {
+				url:"/api/"+lang+"/synset/"+id,
+				method: "GET",
+			};
+			prependConfig(config);
+			return $http(config);
+		}
+		function getPhrase(lang, id) {
+			let config = {
+				url: "/api/" + lang + "/synset/" + id + "/phrase",
+				method: "GET"
+			}
+			return $http(config);
+		}
+		function updatePhrase(lang, id, phrase) {
+			let config = {
+				url:"/api/"+lang+"/synset/"+id+"/phrase",
+				method: "PUT",
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: {
+					phrase: phrase,
+					lang: lang
+				}
+			};
+			return $http(config);
+		}
 		return {
 			setBaseUrl: setBaseUrl,
-			prependConfig: prependConfig,
-			search: search
+			search: search,
+			getSynset: getSynset,
+			getPhrase: getPhrase,
+			updatePhrase: updatePhrase
 		}
 	}
 	service();
@@ -155,8 +186,8 @@
 	});
 
 
-	wordsController.$inject = ["$location", "$routeParams", "$http", "comments"];
-	function wordsController($location, $routeParams, $http, comments) {
+	wordsController.$inject = ["$location", "$routeParams", "$http", "comments", "wordnetApi"];
+	function wordsController($location, $routeParams, $http, comments, wordnetApi) {
 		var ctrl = this;
 		ctrl.$onInit = onInit;
 		function onInit() {
@@ -175,19 +206,15 @@
 			comments.clear();
 			comments.setParams(lang, id);
 			
-			var config = {
-				url:"/api/"+lang+"/synset/"+id,
-				method: "GET",
-			};
-			$http(config).then(
+			wordnetApi.getSynset(lang, id).then(
 							function success(response){
 								ctrl.synset = response.data;
 								ctrl.eng_definition = ctrl.synset.Definition;
 								ctrl.word = ctrl.synset.Synset;
 								ctrl.define_link = "https://www.google.com/#safe=active&q=define:" + getSearchWord(ctrl.synset.Synset);
 
-							}
-							, function error(response){
+							}).catch(
+							function error(response){
 								ctrl.eng_definition = "Word not found";
 							}
 						);
@@ -200,7 +227,7 @@
 		}
 
 		function getPhrase(lang, id) {
-			$http.get('/api/'+lang+'/synset/'+id+'/phrase').then(
+			wordnetApi.getPhrase(lang, id).then(
 				function success(response){
 					if(response.data) {
 						if(lang === "en")
@@ -209,27 +236,16 @@
 							ctrl.jp_phrase = response.data.phrase
 						}
 					}
-				}, function error(response) {
+				}).catch(function error(response) {
 
 				});	
 		}
 		function updatePhrase(lang, id, phrase) {
-			var config = {
-				url:"/api/"+lang+"/synset/"+id+"/phrase",
-				method: "PUT",
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				data: {
-					phrase: phrase,
-					lang: lang
-				}
-			};
-			$http(config).then(
+			wordnetApi.updatePhrase(lang, id, phrase).then(
 							function success(response){
 								console.log(response);
 							}
-							, function error(response){
+							).catch(function error(response){
 								alert("Unable to update phrase")
 							}
 						);
