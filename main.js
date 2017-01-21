@@ -355,7 +355,7 @@
 		var ctrl = this;
 		ctrl.$onInit = onInit;
 		function onInit() {
-			wordnetApi.setBaseUrl("http://marksmethod-mynameis7.rhcloud.com")
+			wordnetApi.setBaseUrl("https://marksmethod-mynameis7.rhcloud.com")
 			ctrl.word_search = "";
 			ctrl.words = [];
 		}
