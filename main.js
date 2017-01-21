@@ -171,9 +171,12 @@
 	service();
 })();
 (function() {
-	function AppCtrl() {
+	AppCtrl.$inject = ["wordnetApi"];
+	function AppCtrl(wordnetApi) {
 		var ctrl = this;
 		ctrl.currentNavItem = "home";
+		wordnetApi.setBaseUrl("https://marksmethod-mynameis7.rhcloud.com")
+
 	}
 	angular.module("marks-method").controller("AppCtrl", AppCtrl);
 })();
@@ -373,7 +376,6 @@
 		var ctrl = this;
 		ctrl.$onInit = onInit;
 		function onInit() {
-			wordnetApi.setBaseUrl("https://marksmethod-mynameis7.rhcloud.com")
 			ctrl.word_search = "";
 			ctrl.words = [];
 		}
