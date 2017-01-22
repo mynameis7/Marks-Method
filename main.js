@@ -419,16 +419,38 @@
 })();
 
 (function() {
+	let component = (() => {
+		angular.module("marks-method").component("listView", {
+			controller: listController,
+			templateUrl: "templates/list.htm",
+			controllerAs: "list"
+		});
+	});
+	listController.$inject = ["wordnetApi"];
+	function listController(wordnetApi) {
+		var ctrl = this;
+		ctrl.phrases = [];
+		ctrl.$onInit = onInit;
+
+		function onInit() {
+			/*wordnetApi.getAllPhrases(lang) {
+
+			}*/
+		}
+	}
+	component();
+})();
+
+(function() {
 	angular.module("marks-method").config(function($routeProvider) {
 		$routeProvider
 		.when("/", {
-			// templateUrl : "/static/templates/main.htm",
-			// controller: "mainController"
+			template: "<search-view></search-view>"
+		})
+		.when("/search", {
 			template: "<search-view></search-view>"
 		})
 		.when("/words/:lang/:db_id", {
-			// templateUrl : "/static/templates/words.htm",
-			//controller: "wordsController"
 			template: "<word-view></word-view>"
 		})
 		.when("/about", {
