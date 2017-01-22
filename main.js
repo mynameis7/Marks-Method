@@ -429,7 +429,7 @@
 	listController.$inject = ["wordnetApi"];
 	function listController(wordnetApi) {
 		var ctrl = this;
-		ctrl.phrases = [];
+		ctrl.phrases = [1, 2, 3, 4, 5];
 		ctrl.$onInit = onInit;
 
 		function onInit() {
