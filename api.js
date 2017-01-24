@@ -110,12 +110,15 @@ api.get('/allPhrases', function(req, res, next) {
 	db.phrases.find({}, function(err, docs) {
 		if(err) return handleErr(err, res);
 		let phrases = {};
+		let languages = {};
+		languageCount = 0;
 		for(var i = 0; i < docs.length; i++) {
 			let doc = docs[i];
 			phrases[doc["Database ID"]] = phrases[doc["Database ID"]] || {};
 			phrases[doc["Database ID"]][doc.lang] = doc.phrase
+			languages[doc.lang] = langages[doc.lang] || languageCount++;
 		}
-		res.send(phrases);
+		res.send({phrases: phrases, languages: languages});
 	});
 });
 
