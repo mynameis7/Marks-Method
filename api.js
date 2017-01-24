@@ -109,7 +109,13 @@ api.get('/phrase_count/:db_id', function(req, res, next) {
 api.get('/allPhrases', function(req, res, next) {
 	db.phrases.find({}, function(err, docs) {
 		if(err) return handleErr(err, res);
-		res.send(docs);
+		let phrases = {};
+		for(var i = 0; i < docs.length; i++) {
+			let doc = docs[i];
+			phrases[doc["Database ID"]] = phrases[doc["Database ID"]] || {};
+			phrases[doc["Database ID"]][doc.lang] = doc.phrase
+		}
+		res.send(phrases);
 	});
 });
 
