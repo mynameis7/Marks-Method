@@ -105,7 +105,13 @@ api.get('/phrase_count/:db_id', function(req, res, next) {
 		if(err) return handleErr(err, res);
 		res.send(docs.length);
 	})
-}) ;
+});
+api.get('/allPhrases', function(req, res, next) {
+	db.phrases.find({}, function(err, docs) {
+		if(err) return handleErr(err, res);
+		res.send(docs);
+	});
+});
 
 api.get('/:lang/synset/:db_id', function(req, res, next) {
 	var id = req.params.db_id;
