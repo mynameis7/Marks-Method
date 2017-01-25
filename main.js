@@ -55,12 +55,21 @@
 			prependConfig(config);
 			return $http(config);
 		}
+		function getAllPhrases() {
+			let config = {
+				url:"/api/allPhrases",
+				method:"GET"
+			}
+			prependConfig(config);
+			return $http(config);
+		}
 		return {
 			setBaseUrl: setBaseUrl,
 			search: search,
 			getSynset: getSynset,
 			getPhrase: getPhrase,
-			updatePhrase: updatePhrase
+			updatePhrase: updatePhrase,
+			getAllPhrases: getAllPhrases
 		}
 	}
 	service();
@@ -430,12 +439,18 @@
 	function listController(wordnetApi) {
 		var ctrl = this;
 		ctrl.phrases = [1, 2, 3, 4, 5];
+		ctrl.langOrder = [];
 		ctrl.$onInit = onInit;
 
 		function onInit() {
-			/*wordnetApi.getAllPhrases(lang) {
-
-			}*/
+			wordnetApi.getAllPhrases()
+			.then(function success(response) {
+				ctrl.phrases = response.data.phrases;
+				ctrl.langOrder = response.data.languageOrder;
+				console.log(response);
+			})
+			.catch(function error() {
+			});
 		}
 	}
 	component();
