@@ -63,19 +63,14 @@
 			prependConfig(config);
 			return $http(config);
 		}
-
-		let comments = {
-
-		}
-
+		
 		return {
 			setBaseUrl: setBaseUrl,
 			search: search,
 			getSynset: getSynset,
 			getPhrase: getPhrase,
 			updatePhrase: updatePhrase,
-			getAllPhrases: getAllPhrases,
-			comments: comments
+			getAllPhrases: getAllPhrases
 		}
 	}
 	service();
