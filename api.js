@@ -118,7 +118,7 @@ api.get('/allPhrases', function(req, res, next) {
 			phrases[doc["Database ID"]][doc.lang] = doc.phrase
 			languages[doc.lang] = langages[doc.lang] || languageCount++;
 		}
-		res.send({phrases: phrases, languages: languages});
+		res.send({phrases: phrases, languageOrder: Object.keys(languages)});
 	});
 });
 
