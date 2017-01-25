@@ -1,10 +1,10 @@
 <md-content >
 	<div layout-align="center center" layout="column">
 		<h1 flex="nogrow">Synsets with Phrases</h1>
-		<md-list flex>
-			<md-list-item ng-repeat="phrase in list.phrases">
-				<div class="md-list-item-text" layout="row" layout-align="start center">
-					<div class="md-padding" flex>test</div>
+		<md-list flex ng-cloak>
+			<md-list-item ng-repeat="(id, phrase) in list.phrases" ng-click="list.click(id, 'en')">
+				<div class="md-list-item-text" layout="row" layout-align="start center" flex>
+					<div class="md-padding" flex ng-repeat="lang in list.langOrder">{{phrase[lang]}}</div>
 				</div>
 			</md-list-item>
 		</md-list>

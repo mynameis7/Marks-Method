@@ -63,13 +63,19 @@
 			prependConfig(config);
 			return $http(config);
 		}
+
+		let comments = {
+
+		}
+
 		return {
 			setBaseUrl: setBaseUrl,
 			search: search,
 			getSynset: getSynset,
 			getPhrase: getPhrase,
 			updatePhrase: updatePhrase,
-			getAllPhrases: getAllPhrases
+			getAllPhrases: getAllPhrases,
+			comments: comments
 		}
 	}
 	service();
@@ -200,8 +206,8 @@
 	});
 
 
-	wordsController.$inject = ["$location", "$routeParams", "$http", "comments", "wordnetApi"];
-	function wordsController($location, $routeParams, $http, comments, wordnetApi) {
+	wordsController.$inject = ["$location", "$routeParams", "comments", "wordnetApi"];
+	function wordsController($location, $routeParams, comments, wordnetApi) {
 		var ctrl = this;
 		ctrl.$onInit = onInit;
 		function onInit() {
@@ -435,12 +441,13 @@
 			controllerAs: "list"
 		});
 	});
-	listController.$inject = ["wordnetApi"];
-	function listController(wordnetApi) {
+	listController.$inject = ["$location","wordnetApi"];
+	function listController($location, wordnetApi) {
 		var ctrl = this;
 		ctrl.phrases = [1, 2, 3, 4, 5];
 		ctrl.langOrder = [];
 		ctrl.$onInit = onInit;
+		ctrl.click = click;
 
 		function onInit() {
 			wordnetApi.getAllPhrases()
@@ -451,6 +458,9 @@
 			})
 			.catch(function error() {
 			});
+		}
+		function click(id, lang) {
+			$location.url('words/' + lang + '/' + id);
 		}
 	}
 	component();
