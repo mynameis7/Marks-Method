@@ -465,23 +465,37 @@
 	angular.module("marks-method").config(function($routeProvider) {
 		$routeProvider
 		.when("/", {
-			template: "<search-view></search-view>"
+			template: "<search-view></search-view>",
+			title:""
 		})
 		.when("/search", {
-			template: "<search-view></search-view>"
+			template: "<search-view></search-view>",
+			title: " - Search"
 		})
 		.when("/words/:lang/:db_id", {
-			template: "<word-view></word-view>"
+			template: "<word-view></word-view>",
+			title: ""
 		})
 		.when("/about", {
-			templateUrl : "templates/about.htm"
+			templateUrl : "templates/about.htm",
+			title: " - About"
 		})
 		.when("/list", {
-			template: "<list-view></list-view>"
+			template: "<list-view></list-view>",
+			title: " - List"
 		})
 		.otherwise( {
 			template: "<h3>Url Not Found</h3>"
 		});
 	});
+})();
+
+(function() {
+	angular.module("marks-method").run(["$rootScope",function($rootScope) {
+		$rootScope.$on("$routeChangeSuccess", function(event, current, previous) {
+			$rootScope.title = current.title;
+			console.log("update");
+		})
+	}])
 })();
 
