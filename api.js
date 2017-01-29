@@ -2,6 +2,7 @@ var express = require("express");
 var bodyparser = require("body-parser");
 var mongojs = require("mongojs");
 var stringSimilarity = require("string-similarity");
+var Promise = require("bluebird");
 var jsonparser = bodyparser.json();
 var api = express.Router();
 
@@ -106,19 +107,56 @@ api.get('/phrase_count/:db_id', function(req, res, next) {
 		res.send(docs.length);
 	})
 });
+
+function getSynsetForPhrase(phrase) {
+	return new Promise(function(resolve, reject) {
+		db.wordnet_data.findOne({"Database ID": phrase["Database ID"]}, {"_id": 0, "Database ID": 1, "Synset": 1, "Jpn Synset": 1}, function(err, doc) {
+			if(err) return reject(err);
+			return resolve(doc);
+		})
+	});
+}
+
 api.get('/allPhrases', function(req, res, next) {
 	db.phrases.find({}, function(err, docs) {
 		if(err) return handleErr(err, res);
 		let phrases = {};
 		let languages = {};
 		let languageCount = 0;
+		let synsetPromises = [];
 		for(var i = 0; i < docs.length; i++) {
 			let doc = docs[i];
 			phrases[doc["Database ID"]] = phrases[doc["Database ID"]] || {};
 			phrases[doc["Database ID"]][doc.lang] = doc.phrase
 			languages[doc.lang] = languages[doc.lang] || languageCount++;
+			synsetPromises.push(getSynsetForPhrase(docs[i]));
 		}
-		res.send({phrases: phrases, languageOrder: Object.keys(languages)});
+		Promise.all(synsetPromises).then(function(docs) {
+			for(var i = 0; i < docs.length; i++) {
+				let id = docs[i]["Database ID"];
+				if(phrases[id].en)
+					phrases[id].en_synset = docs[i]["Synset"];
+				if(phrases[id].jpn)
+					phrases[id].jp_synset = docs[i]["Jpn Synset"];
+			}
+			res.send({phrases: phrases, languageOrder: Object.keys(languages)});
+		})
+	});
+});
+
+api.get('/data.json', function(req, res, next) {
+	db.phrases.find(function(err, phrases) {
+		db.wordnet_data.find(function(err, wordnet) {
+			res.attachment("marks-method.json");
+			res.setHeader('Content-Type', 'application/octet-stream')
+			res.end(JSON.stringify({phrases: phrases, wordnet: wordnet}), "utf8");
+		});
+	});
+});
+
+api.get('/phrase_synsets', function(req, res, next) {
+	db.wordnet_data.find({}, {"Database ID": 1, "Synset": 1}, function(err, synsets) {
+		res.json(synsets);
 	});
 });
 
