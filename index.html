@@ -24,7 +24,7 @@
 	<div ng-controller="AppCtrl as app">
 		<md-content class="md-padding" ng-cloak>
 		    <md-nav-bar md-selected-nav-item="app.currentNavItem" nav-bar-aria-label="navigation links">
-				<md-nav-item md-nav-href="#" name="home">Home</md-nav-item>
+				<md-nav-item md-nav-href="#/" name="home">Home</md-nav-item>
 				<md-nav-item md-nav-href="#about" name="about">About</md-nav-item>
 				<md-nav-item md-nav-href="#search" name="search">Search</md-nav-item>
 				<md-nav-item md-nav-href="#list" name="list">List</md-nav-item>
@@ -34,6 +34,11 @@
 				-->
 		    </md-nav-bar>
 		</md-content>
+		<div id="loading" layout="column" ng-show="loadingView" layout="column">
+			<div flex layout="row" layout-sm="column" layout-align="center center">
+		    	<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+		    </div>
+	    </div>
 		<ng-view>
 			
 		</ng-view>

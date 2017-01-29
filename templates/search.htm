@@ -11,6 +11,7 @@
 				<label>Word</label>
 				<input ng-model="search.word_search" ng-change="search.updateWordList()" ng-model-options="{debounce: 250}"/>
 			</md-input-container>
+			<md-progress-linear md-mode="indeterminate" ng-show="search.searching"></md-progress-linear>
 		</md-content>
 		<md-content class="md-padding">
 			<md-list flex>

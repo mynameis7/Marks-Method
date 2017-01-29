@@ -196,7 +196,10 @@
 		angular.module("marks-method").component("wordView", {
 			controller: wordsController,
 			templateUrl: "templates/words.htm",
-			controllerAs: "word"
+			controllerAs: "word",
+			bindings: {
+				synset: "<"
+			}
 		});
 	});
 
@@ -208,7 +211,6 @@
 		function onInit() {
 			ctrl.word = "";
 			ctrl.eng_definition = "";
-			ctrl.synset = {};
 			ctrl.updatePhrase = updatePhrase;
 			ctrl.toggleReply = toggleReply;
 			//ctrl.forceUpdate = forceUpdate;
@@ -220,8 +222,9 @@
 			var id = $routeParams.db_id
 			comments.clear();
 			comments.setParams(lang, id);
-			
-			wordnetApi.getSynset(lang, id).then(
+			console.log(ctrl.synset);
+			//ctrl.synset = 
+			/*wordnetApi.getSynset(lang, id).then(
 							function success(response){
 								ctrl.synset = response.data;
 								ctrl.eng_definition = ctrl.synset.Definition;
@@ -232,7 +235,7 @@
 							function error(response){
 								ctrl.eng_definition = "Word not found";
 							}
-						);
+						);*/
 			getPhrase("en", id);
 			getPhrase("jpn", id);
 			comments.update(function(cmts) {
@@ -385,6 +388,7 @@
 	function SearchController($location, $log, $http, wordnetApi) {
 		var ctrl = this;
 		ctrl.$onInit = onInit;
+		ctrl.searching = false;
 		function onInit() {
 			ctrl.word_search = "";
 			ctrl.words = [];
@@ -413,8 +417,10 @@
 			if(ctrl.word_search === "")
 				ctrl.words = [];
 			else {
+				ctrl.searching = true;
 				wordnetApi.search(ctrl.word_search).then(
 					function success(response) {
+						ctrl.searching = false;
 						ctrl.words = response.data;//filterWords(ctrl.word_search, response.data);
 					}, function error(response) {
 						ctrl.words = [];
@@ -433,26 +439,31 @@
 		angular.module("marks-method").component("listView", {
 			controller: listController,
 			templateUrl: "templates/list.htm",
-			controllerAs: "list"
+			controllerAs: "list",
+			bindings: {
+				data: "<"
+			}
 		});
 	});
 	listController.$inject = ["$location","wordnetApi"];
 	function listController($location, wordnetApi) {
 		var ctrl = this;
-		ctrl.phrases = [1, 2, 3, 4, 5];
+		ctrl.phrases = [];
 		ctrl.langOrder = [];
 		ctrl.$onInit = onInit;
 		ctrl.click = click;
 
 		function onInit() {
-			wordnetApi.getAllPhrases()
+			console.log(ctrl)
+			ctrl.phrases = ctrl.data.phrases;
+			ctrl.langOrder = ctrl.data.languageOrder;
+			/*wordnetApi.getAllPhrases()
 			.then(function success(response) {
 				ctrl.phrases = response.data.phrases;
 				ctrl.langOrder = response.data.languageOrder;
-				console.log(response);
 			})
 			.catch(function error() {
-			});
+			});*/
 		}
 		function click(id, lang) {
 			$location.url('words/' + lang + '/' + id);
@@ -473,16 +484,32 @@
 			title: " - Search"
 		})
 		.when("/words/:lang/:db_id", {
-			template: "<word-view></word-view>",
-			title: ""
+			template: '<word-view synset="$resolve.synset"></word-view>',
+			title: "",
+			resolve: {
+				synset: function($route, wordnetApi) {
+					let params = $route.current.params;
+					return wordnetApi.getSynset(params.lang, params.db_id).then(function(response) {
+						console.log(response.data);
+						return response.data;
+					})
+				}
+			}
 		})
 		.when("/about", {
 			templateUrl : "templates/about.htm",
 			title: " - About"
 		})
 		.when("/list", {
-			template: "<list-view></list-view>",
-			title: " - List"
+			template: '<list-view data="$resolve.allPhrases"></list-view>',
+			title: " - List",
+			resolve: {
+				allPhrases: function(wordnetApi) {
+					return wordnetApi.getAllPhrases().then(function(response){
+						return response.data;
+					})
+				},
+			}
 		})
 		.otherwise( {
 			template: "<h3>Url Not Found</h3>"
@@ -494,8 +521,14 @@
 	angular.module("marks-method").run(["$rootScope",function($rootScope) {
 		$rootScope.$on("$routeChangeSuccess", function(event, current, previous) {
 			$rootScope.title = current.title;
-			console.log("update");
-		})
+			$rootScope.loadingView = false;
+		});
+		$rootScope.$on("$routeChangeStart", function(event, current, previous) {
+		    if (current.$$route && current.$$route.resolve) {
+		      // Show a loading message until promises are not resolved
+		      $rootScope.loadingView = true;
+		    }
+		});
 	}])
 })();
 
