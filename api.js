@@ -117,30 +117,40 @@ function getSynsetForPhrase(phrase) {
 	});
 }
 
+function makePromises(docs) {
+	return new Promise(function(resolve, reject) {
+		let synsets = [];
+		docs.forEach(function(doc) {
+			synsets.push(getSynsetForPhrase(doc));
+		});
+		resolve(synsets);
+	})
+}
+
+api.get('/phraseSynsets', function(req, res, next){
+	db.phrases.find({}, {"Database ID": 1, _id: 0}, function(err, docs) {
+		makePromises(docs).then(function(promises) {
+			Promise.all(promises).then(function(synsets) {
+				res.json(synsets);
+			})
+		})
+	})
+})
+
 api.get('/allPhrases', function(req, res, next) {
 	db.phrases.find({}, function(err, docs) {
 		if(err) return handleErr(err, res);
 		let phrases = {};
 		let languages = {};
 		let languageCount = 0;
-		let synsetPromises = [];
 		for(var i = 0; i < docs.length; i++) {
 			let doc = docs[i];
 			phrases[doc["Database ID"]] = phrases[doc["Database ID"]] || {};
 			phrases[doc["Database ID"]][doc.lang] = doc.phrase
 			languages[doc.lang] = languages[doc.lang] || languageCount++;
-			synsetPromises.push(getSynsetForPhrase(docs[i]));
 		}
-		Promise.all(synsetPromises).then(function(docs) {
-			for(var i = 0; i < docs.length; i++) {
-				let id = docs[i]["Database ID"];
-				if(phrases[id].en)
-					phrases[id].en_synset = docs[i]["Synset"];
-				if(phrases[id].jpn)
-					phrases[id].jp_synset = docs[i]["Jpn Synset"];
-			}
-			res.send({phrases: phrases, languageOrder: Object.keys(languages)});
-		})
+		res.send({phrases: phrases, languageOrder: Object.keys(languages)});
+
 	});
 });
 
